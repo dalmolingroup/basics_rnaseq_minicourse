@@ -1,0 +1,291 @@
+---
+title: "Bioinformática aplicada à Transcriptômica"
+subtitle: "Uma introdução prática ao RNA-seq"
+author: "Gleison M. Azevedo"
+institute: "Mestrando em Bioinformática (BioME/UFRN)"
+date: last-modified
+date-format: "DD/MM/YYYY"
+lang: pt-BR
+format:
+  revealjs:
+    theme: white
+    slide-number: true
+    show-slide-number: all
+    transition: slide
+    logo: "https://raw.githubusercontent.com/bioinfo-ufrn/brand/main/logo/ufrn-logo.png"
+    footer: "Minicurso RNA-seq | Gleison Azevedo"
+    css: styles.css
+    chalkboard: true
+editor: visual
+---
+
+# Olá! Quem sou eu? {background-color="#003366"}
+
+
+# Gleison M. Azevedo
+*Biomédico & Bioinformata*
+
+::: {.column width="100%"}
+* **Formação:** Biomédico (UFRN - 2024). Atuando em Bioinformática desde 2022.
+* **Acadêmico:** Mestrando no Programa de Pós-Graduação em Bioinformática (BioME/IMD/UFRN).
+* **Atuação Profissional:** Bioinformata na **Ostera** e na **Sepal AI**.
+* **Pesquisa:** Transcriptômica, Metagenômica e Evolução de Sistemas Biológicos.
+:::
+
+# Introdução à Bioinformática {background-color="#34495e"}
+
+## Definição e Escopo
+
+A Bioinformática é um campo **interdisciplinar** que desenvolve métodos e **ferramentas** de software para a **compreensão de dados biológicos complexos**.
+
+::: columns
+
+::: {.column}
+```{mermaid}
+%%{init: {'theme': 'base', 'themeVariables': { 'primaryColor': '#ffcccc', 'edgeLabelBackground':'#ffffff', 'tertiaryColor': '#fff0f0'}}}%%
+graph TD
+    B(Biologia) --> I(BIOINFO)
+    E(Estatística) --> I
+    C(Computação) --> I
+    style I fill:#f9f,stroke:#333,stroke-width:4px
+```
+::: 
+
+:::
+
+::: callout-note
+## Objetivo do Minicurso
+Capacitar estudantes de Biomedicina na interpretação de dados de sequenciamento de RNA e na compreensão dos fluxos de análise computacional.
+:::
+
+---
+
+# Bloco 1: Fundamentos Biológicos {background-color="#2C3E50"}
+
+## O Dogma Central
+
+![Dogma Central](https://img.genial.ly/5e8c61176af3b65c0558ebd0/1ca45ad8-03ea-442e-a3a1-7d26f1b239b0.jpeg){fig-align="center"}
+
+
+
+# Dogma Central
+
+**DNA -> RNA -> Proteína**.
+
+* **Genoma:** A biblioteca completa (Estático).
+* **Transcriptoma:** Quais livros estão sendo lidos agora (Dinâmico).
+
+::: fragment
+> Se a célula tem muito RNA de *Insulina*, ela provavelmente é uma célula Beta pancreática trabalhando muito.
+:::
+
+## Por que a expressão varia?
+
+O DNA é (quase) igual em todas as suas células. O que muda é o Transcriptoma.
+
+* **Contexto Temporal:** Embrião vs. Adulto.
+* **Contexto Tecidual:** Fígado vs. Neurônio.
+* **Contexto Patológico:** Saudável vs. Doente.
+* **Resposta a Estímulos:** Tratado com Droga vs. Controle.
+
+## Análise do transcriptoma
+
+Variação da Expressão Gênica
+A análise de RNA-seq busca identificar variações estatisticamente significativas entre condições biológicas distintas.
+
+![Transcriptome](https://www.bioinformatics.com.cn/static/img/onlineplots_img/024_basic_cluster_heatmap_plot.png)
+
+---
+
+::: fragment 
+Conceito Chave: O transcriptoma reflete o estado fisiológico da célula em um momento específico "Snapshot". 
+:::
+
+# Bloco 2: Tecnologia e Dados {background-color="#2C3E50"}
+
+## Princípio do Sequenciamento (NGS)
+
+A metodologia *Shotgun* permite o sequenciamento de genomas e transcriptomas complexos através da fragmentação massiva.
+
+1.  **Fragmentação:** Quebra do material genético (RNA) em fragmentos menores.
+2.  **Sequenciamento:** Leitura de milhões de fragmentos simultaneamente (*50-250nt*).
+3.  **Reads:** Esses fragmentos sequenciados são denominados *reads*.
+
+::: center
+{{< video https://youtu.be/EDVKxSNdSic width="700" height="400" >}}
+:::
+
+## O Arquivo FASTQ 
+
+O formato padrão para armazenamento de dados brutos de sequenciamento.
+
+```default
+@SEQ_ID
+GATTTGGGGTTCAAAGCAGTATCGATCAAATAGTAAATCCATTTGTTCAACTCACAGTTT
++
+!''*((((***+))%%%++)(%%%%).1***-+*''))**55CCF>>>>>>CCCCCCC65
+```
+
+---
+ 
+![](https://github.com/dalmolingroup/metagenome-course/blob/master/content/images/fastq_example.png?raw=true)
+
+-   **Em Roxo:** Identificador do sequenciamento.
+-   **Em Laranja:** Sequências adaptadoras (caso ainda não tenham sido removidas), que podem variar dependendo da plataforma de sequenciamento.
+-   **Em Azul:** O fragmento de RNA sequenciado, conhecido como "*Insert Size*".
+-   **Em Verde:** Phred Score, que indica a qualidade de cada base na sequência.
+
+# O que fazer com fragmentos de RNA?
+
+Os fragmentos sozinhos não trazem informações relevantes, por isso precisamos de dois arquivos complementares.
+
+`.FASTA`: Genoma
+\`.gtf`: Anotação (posição)
+
+# Controle de Qualidade (QC)
+
+Antes de analisar, precisamos limpar.
+
+* **fastp:** Corta adaptadores e bases de baixa qualidade (a "tesoura").
+* **MultiQC:** Gera um relatório visual de todas as amostras.
+
+::: notes
+Explicar que lixo entra -> lixo sai. Se a qualidade for ruim, a análise biológica falha.
+:::
+
+---
+
+# Bloco 3: O Pipeline {background-color="#2C3E50"}
+
+## O Fluxo de Trabalho (nf-core/rnaseq)
+
+Não rodamos comando por comando manualmente. Usamos **Pipelines**.
+
+::: columns
+::: {.column width="50%"}
+**Entrada:**
+Arquivos FASTQ (Gigabytes de dados)
+
+⬇️
+
+**Processamento:**
+Limpeza, Alinhamento, Quantificação
+
+⬇️
+
+**Saída:**
+Tabela de Contagem (Excel)
+:::
+
+::: {.column width="50%"}
+**nf-core:**
+Padrão ouro em reprodutibilidade. Garante que sua análise possa ser repetida por qualquer pessoa, em qualquer lugar.
+:::
+:::
+
+## O Grande Dilema: Onde encaixar?
+
+Temos milhões de *reads*. De onde elas vieram?
+
+### 1. Alinhamento (ex: STAR)
+
+* Mapeia no **Genoma**.
+* Preciso, descobre novos splicings.
+* *Output:* Arquivo **BAM** (Pesado).
+
+### 2. Pseudoalinhamento (ex: Salmon)
+
+* Mapeia no **Transcriptoma**.
+* Muito rápido, foca em quantificar o que já conhecemos.
+* *Output:* Apenas contagens.
+
+## O Resultado Final: A Matriz de Contagem
+
+É aqui que a biologia vira estatística.
+
+| Gene | Controle_1 | Controle_2 | Tratado_1 | Tratado_2 |
+| :--- | :---: | :---: | :---: | :---: |
+| BRCA1 | 200 | 210 | 50 | 45 |
+| TP53 | 1500 | 1450 | 1520 | 1480 |
+| ACTB | 50000 | 51000 | 50500 | 49000 |
+
+::: fragment
+**Pergunta:** O gene BRCA1 aumentou ou diminuiu no tratamento?
+:::
+
+---
+
+# Bloco 4: Prática (Mão na Massa) {background-color="#E74C3C"}
+
+## Hora do R! 🧑‍💻
+
+Vamos usar o pacote **DESeq2**.
+
+O que ele faz?
+
+1.  **Normalização:** Compensa se uma amostra foi sequenciada mais que a outra.
+2.  **Estatística:** Calcula se a diferença é real ou acaso.
+3.  **Log2FoldChange:** A magnitude da mudança (2x, 4x, 0.5x).
+
+## Visualizando: PCA
+
+As minhas amostras se comportam como esperado?
+
+*(Espaço para plotar o gráfico no RStudio durante a prática)*
+
+> O PCA reduz a complexidade. Amostras parecidas ficam perto, diferentes ficam longe.
+
+## Visualizando: Volcano Plot
+
+O gráfico mais famoso da transcriptômica.
+
+* **Eixo X:** Mudança Biológica (Log2FoldChange).
+* **Eixo Y:** Certeza Estatística (-log10 p-value).
+* **Topo e pontas:** Os genes mais interessantes.
+
+## Enriquecimento Funcional
+
+Ok, tenho uma lista de 500 genes alterados. E agora?
+
+* **Gene Ontology (GO):** "Processo imune", "Divisão celular".
+* **KEGG:** Vias metabólicas.
+* **Redes (STRING):** Como essas proteínas conversam?
+
+---
+
+# Conclusão & Próximos Passos {background-color="#003366"}
+
+## BioME - Bioinformatics Multidisciplinary Environment
+
+Gostou do que viu hoje? Isso é só a ponta do iceberg.
+
+**O Programa de Pós-Graduação em Bioinformática da UFRN:**
+
+* Multidisciplinar: Aceitamos biomédicos, biólogos, farmacêuticos, computação...
+* Foco em resolver problemas reais de saúde, agricultura e evolução.
+
+## Por que se especializar?
+
+1.  **Ciência de Dados** é a habilidade do futuro na saúde.
+2.  Medicina de Precisão e Diagnóstico Molecular dependem disso.
+3.  Mercado acadêmico e privado em expansão.
+
+## Contatos
+
+::: columns
+::: {.column width="50%"}
+**Gleison M. Azevedo**
+
+📧 `seu.email@ufrn.br`
+🐙 [github.com/gleisonm](https://github.com/gleisonm/)
+:::
+
+::: {.column width="50%"}
+**BioME - UFRN**
+
+🌐 bioinfo.imd.ufrn.br
+🏫 Instituto Metrópole Digital
+:::
+:::
+
+**Obrigado! Dúvidas?**
