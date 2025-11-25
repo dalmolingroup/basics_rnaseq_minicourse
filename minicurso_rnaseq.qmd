@@ -3,7 +3,7 @@ title: "Bioinformática aplicada à Transcriptômica"
 subtitle: "Uma introdução prática ao RNA-seq"
 author: "Gleison M. Azevedo"
 institute: "Mestrando em Bioinformática (BioME/UFRN)"
-date: last-modified
+date: 2025-11-28
 date-format: "DD/MM/YYYY"
 lang: pt-BR
 format:
@@ -12,100 +12,110 @@ format:
     slide-number: true
     show-slide-number: all
     transition: slide
-    logo: "https://raw.githubusercontent.com/bioinfo-ufrn/brand/main/logo/ufrn-logo.png"
+    logo: "images/logo_letra_preta.svg"
     footer: "Minicurso RNA-seq | Gleison Azevedo"
     css: styles.css
     chalkboard: true
-editor: visual
+    fit: true
+editor: source
 ---
 
-# Olá! Quem sou eu? {background-color="#003366"}
-
+# Olá! Quem sou eu? {background-color="#2C2F33"}
 
 # Gleison M. Azevedo
+
 *Biomédico & Bioinformata*
 
 ::: {.column width="100%"}
-* **Formação:** Biomédico (UFRN - 2024). Atuando em Bioinformática desde 2022.
-* **Acadêmico:** Mestrando no Programa de Pós-Graduação em Bioinformática (BioME/IMD/UFRN).
-* **Atuação Profissional:** Bioinformata na **Ostera** e na **Sepal AI**.
-* **Pesquisa:** Transcriptômica, Metagenômica e Evolução de Sistemas Biológicos.
+-   **Formação:** Biomédico (UFRN - 2024). Atuando em Bioinformática desde 2022.
+-   **Acadêmico:** Mestrando no Programa de Pós-Graduação em Bioinformática (BioME/IMD/UFRN).
+-   **Atuação Profissional:** Bioinformata na **Ostera** e na **Sepal AI**.
+-   **Pesquisa:** Transcriptômica, Metagenômica e Evolução de Sistemas Biológicos.
 :::
 
-# Introdução à Bioinformática {background-color="#34495e"}
+# O que terá nesse minicurso {.smaller}
 
-## Definição e Escopo
-
-A Bioinformática é um campo **interdisciplinar** que desenvolve métodos e **ferramentas** de software para a **compreensão de dados biológicos complexos**.
-
-::: columns
-
-::: {.column}
-```{mermaid}
-%%{init: {'theme': 'base', 'themeVariables': { 'primaryColor': '#ffcccc', 'edgeLabelBackground':'#ffffff', 'tertiaryColor': '#fff0f0'}}}%%
-graph TD
-    B(Biologia) --> I(BIOINFO)
-    E(Estatística) --> I
-    C(Computação) --> I
-    style I fill:#f9f,stroke:#333,stroke-width:4px
-```
-::: 
-
-:::
+1.  Introdução à bioinformática
+2.  Introdução à cadeia de transcrição
+3.  Onde buscar amostras RNA-seq
+4.  Sequenciamento NGS
+5.  Tipos de arquivos necessários
 
 ::: callout-note
 ## Objetivo do Minicurso
+
 Capacitar estudantes de Biomedicina na interpretação de dados de sequenciamento de RNA e na compreensão dos fluxos de análise computacional.
 :::
 
----
+# Introdução à Bioinformática {background-color="#2C2F33"}
 
-# Bloco 1: Fundamentos Biológicos {background-color="#2C3E50"}
+------------------------------------------------------------------------
+
+![](images/Gemini_Generated_Image_wghr7rwghr7rwghr.png){fig-align="center" width="3000"}
+
+# Bloco 1: Fundamentos Biológicos {background-color="#2C2F33"}
 
 ## O Dogma Central
 
-![Dogma Central](https://img.genial.ly/5e8c61176af3b65c0558ebd0/1ca45ad8-03ea-442e-a3a1-7d26f1b239b0.jpeg){fig-align="center"}
+![](https://img.genial.ly/5e8c61176af3b65c0558ebd0/1ca45ad8-03ea-442e-a3a1-7d26f1b239b0.jpeg){fig-align="center"}
 
+## Dogma Central {.smaller}
 
+**DNA → RNA → Proteína**.
 
-# Dogma Central
-
-**DNA -> RNA -> Proteína**.
-
-* **Genoma:** A biblioteca completa (Estático).
-* **Transcriptoma:** Quais livros estão sendo lidos agora (Dinâmico).
+-   **Genoma:** Conjunto completo de informações genéticas de um organismo; estrutura estável que contém todas as sequências codificantes e regulatórias.
+-   **Transcriptoma:** Conjunto de RNAs expressos em uma célula em um momento específico; reflete a atividade gênica e varia conforme o estado fisiológico ou estímulos externos.
+-   **Proteôma:**Conjunto de proteínas produzidas pela célula; representa o nível funcional da expressão gênica, incluindo modificações pós-traducionais e interações proteicas.
 
 ::: fragment
 > Se a célula tem muito RNA de *Insulina*, ela provavelmente é uma célula Beta pancreática trabalhando muito.
 :::
 
+## Dogma Central {.smaller}
+
+**DNA → RNA → Proteína**.
+
+-   **Genoma:** É como o **livro de receitas completo** da célula. **Todas as receitas existem ali**, mesmo as que nunca serão usadas.
+-   **Transcriptoma:** São as **receitas** que o chef escolheu e colocou na bancada **naquele momento**. Ele seleciona apenas o que precisa para preparar o prato do dia — e essa escolha muda **conforme a demanda**.
+-   **Proteôma:** **É o prato que realmente chega à mesa**. Representa o produto final da receita: aquilo que a célula realmente produz e utiliza para funcionar.
+
 ## Por que a expressão varia?
 
 O DNA é (quase) igual em todas as suas células. O que muda é o Transcriptoma.
 
-* **Contexto Temporal:** Embrião vs. Adulto.
-* **Contexto Tecidual:** Fígado vs. Neurônio.
-* **Contexto Patológico:** Saudável vs. Doente.
-* **Resposta a Estímulos:** Tratado com Droga vs. Controle.
+-   **Contexto Temporal:** Embrião vs. Adulto.
+-   **Contexto Tecidual:** Fígado vs. Neurônio.
+-   **Contexto Patológico:** Saudável vs. Doente.
+-   **Resposta a Estímulos:** Tratado com Droga vs. Controle.
+
+## Conceito chave
+
+Variação da Expressão Gênica A análise de RNA-seq busca identificar variações estatisticamente significativas entre condições biológicas distintas.
+
+::::: columns
+::: column
+![](https://media.springernature.com/lw1200/springer-static/image/art%3A10.1038%2Fs41392-021-00791-1/MediaObjects/41392_2021_791_Fig5_HTML.png)
+:::
+
+::: column
+![](https://media.springernature.com/lw1200/springer-static/image/art%3A10.1038%2Fs41375-018-0117-x/MediaObjects/41375_2018_117_Fig3_HTML.jpg)
+:::
+:::::
 
 ## Análise do transcriptoma
 
-Variação da Expressão Gênica
-A análise de RNA-seq busca identificar variações estatisticamente significativas entre condições biológicas distintas.
+O transcriptoma reflete o estado fisiológico da célula em um momento específico "Snapshot".
 
-![Transcriptome](https://www.bioinformatics.com.cn/static/img/onlineplots_img/024_basic_cluster_heatmap_plot.png)
+![](images/unnamed-chunk-18-1.png){fig-align="center"}
 
----
+## Como conseguir os dados
 
-::: fragment 
-Conceito Chave: O transcriptoma reflete o estado fisiológico da célula em um momento específico "Snapshot". 
-:::
+-   [NCBI - National Center of Biotechnology Information](https://www.ncbi.nlm.nih.gov/)
+-   \$ DIY - Do it yourself \$
 
-# Bloco 2: Tecnologia e Dados {background-color="#2C3E50"}
+# Bloco 2: Tecnologia e Dados {background-color="#2C2F33"}
 
 ## Princípio do Sequenciamento (NGS)
-
-A metodologia *Shotgun* permite o sequenciamento de genomas e transcriptomas complexos através da fragmentação massiva.
 
 1.  **Fragmentação:** Quebra do material genético (RNA) em fragmentos menores.
 2.  **Sequenciamento:** Leitura de milhões de fragmentos simultaneamente (*50-250nt*).
@@ -115,19 +125,19 @@ A metodologia *Shotgun* permite o sequenciamento de genomas e transcriptomas com
 {{< video https://youtu.be/EDVKxSNdSic width="700" height="400" >}}
 :::
 
-## O Arquivo FASTQ 
+## O Arquivo FASTQ
 
 O formato padrão para armazenamento de dados brutos de sequenciamento.
 
-```default
+``` default
 @SEQ_ID
 GATTTGGGGTTCAAAGCAGTATCGATCAAATAGTAAATCCATTTGTTCAACTCACAGTTT
 +
 !''*((((***+))%%%++)(%%%%).1***-+*''))**55CCF>>>>>>CCCCCCC65
 ```
 
----
- 
+------------------------------------------------------------------------
+
 ![](https://github.com/dalmolingroup/metagenome-course/blob/master/content/images/fastq_example.png?raw=true)
 
 -   **Em Roxo:** Identificador do sequenciamento.
@@ -135,123 +145,121 @@ GATTTGGGGTTCAAAGCAGTATCGATCAAATAGTAAATCCATTTGTTCAACTCACAGTTT
 -   **Em Azul:** O fragmento de RNA sequenciado, conhecido como "*Insert Size*".
 -   **Em Verde:** Phred Score, que indica a qualidade de cada base na sequência.
 
-# O que fazer com fragmentos de RNA?
+# O que fazer somente com o fragmentos de RNA?
 
-Os fragmentos sozinhos não trazem informações relevantes, por isso precisamos de dois arquivos complementares.
+Os fragmentos sozinhos não trazem informações relevantes, por isso precisamos de dois arquivos complementares para análise de transcriptomica.
 
-`.FASTA`: Genoma
-\`.gtf`: Anotação (posição)
+-   `.FASTA`
+-   `.gtf`
 
-# Controle de Qualidade (QC)
+# O arquivo FASTA
 
-Antes de analisar, precisamos limpar.
+**Armazena sequências biológicas**
 
-* **fastp:** Corta adaptadores e bases de baixa qualidade (a "tesoura").
-* **MultiQC:** Gera um relatório visual de todas as amostras.
+Cada sequência possui:
 
-::: notes
-Explicar que lixo entra -> lixo sai. Se a qualidade for ruim, a análise biológica falha.
+1.  uma linha de cabeçalho, iniciada por "`>`"
+
+2.  uma ou mais linhas contendo a sequência
+
+``` default
+> Homo_sapiens
+ATGCGTAGCTAGCTAGCTAGCTAGCTCGATCTGATCGATCGTACTAGCTTCGTAC
+TAGTCGTGCTAGTGCATAGCTAGCTCGTATATGCTAGCTGACGTAGCTACCATCG
+ATCGTACGTAGCTAGTAGCTTCATCGT...
+```
+
+# O arquivo GTF {.smaller}
+
+**GTF: arquivo que descreve anotações do genoma**
+
+-   Contém as posições exatas de genes, exons, UTRs, CDS etc.
+
+-   Cada linha representa um elemento anotado no genoma:
+
+1.  chr
+2.  start – end
+3.  feature (gene, exon, CDS...)
+4.  strand (+/-)
+5.  atributos (gene_id, transcript_id, gene_name)
+
+-   Exemplo de linha GTF:
+
+``` default
+chr1  ENSEMBL  exon  34567  34900  .  +  .  gene_id "GENE1"; transcript_id "TX1";
+```
+
+## Em resumo
+
+1.    `.Fastq`: Reads
+2.    `.FASTA`: cDNA
+3.    `.gtf`: Anotação
+
+------------------------------------------------------------------------
+
+## ![](images/Gemini_Generated_Image_jlz77cjlz77cjlz7.png)
+
+# Bloco 3: O Pipeline {background-color="#2C2F33"}
+
+## O que é um pipeline?
+
+![](images/69253fig1.jpg)
+
+## nf-core/rnaseq
+
+![](images/nf-core-rnaseq_metro_map_grey_animated.svg)
+
+::: callout-note
+**nf-core:** Padrão ouro em reprodutibilidade e ferramentas. Garante que sua análise possa ser repetida por qualquer pessoa, em qualquer lugar.
 :::
 
----
 
-# Bloco 3: O Pipeline {background-color="#2C3E50"}
+## Pré-processamento (QC)
 
-## O Fluxo de Trabalho (nf-core/rnaseq)
+<iframe src="images/multiqc_report.html"
+        style="width: 100%; height: 80vh; border: none;">
+</iframe>
 
-Não rodamos comando por comando manualmente. Usamos **Pipelines**.
 
-::: columns
-::: {.column width="50%"}
-**Entrada:**
-Arquivos FASTQ (Gigabytes de dados)
+## Alinhamento
+-   Alinhadores
+-   Pseudo-alinhadores
 
-⬇️
+![](images/Screenshot from 2025-11-25 13-21-59.png)
 
-**Processamento:**
-Limpeza, Alinhamento, Quantificação
+## 1. Alinhamento (ex: STAR)
 
-⬇️
+-   Mapeia no **Genoma**.
+-   Preciso, descobre novos splicings.
+-   *Output:* Arquivo **BAM** (Pesado).
 
-**Saída:**
-Tabela de Contagem (Excel)
-:::
+## 2. Pseudoalinhamento (ex: Salmon)
 
-::: {.column width="50%"}
-**nf-core:**
-Padrão ouro em reprodutibilidade. Garante que sua análise possa ser repetida por qualquer pessoa, em qualquer lugar.
-:::
-:::
+-   Mapeia no **Transcriptoma**.
+-   Muito rápido, foca em quantificar o que já conhecemos.
+-   *Output:* Apenas contagens.
 
-## O Grande Dilema: Onde encaixar?
 
-Temos milhões de *reads*. De onde elas vieram?
+![](images/We-compare-four-different-approaches-for-quantifying-homeolog-expression-a-a.ppm)
 
-### 1. Alinhamento (ex: STAR)
-
-* Mapeia no **Genoma**.
-* Preciso, descobre novos splicings.
-* *Output:* Arquivo **BAM** (Pesado).
-
-### 2. Pseudoalinhamento (ex: Salmon)
-
-* Mapeia no **Transcriptoma**.
-* Muito rápido, foca em quantificar o que já conhecemos.
-* *Output:* Apenas contagens.
 
 ## O Resultado Final: A Matriz de Contagem
 
-É aqui que a biologia vira estatística.
+| Gene  | Controle_1 | Controle_2 | Tratado_1 | Tratado_2 |
+|:------|:----------:|:----------:|:---------:|:---------:|
+| BRCA1 |    200     |    210     |    50     |    45     |
+| TP53  |    1500    |    1450    |   1520    |   1480    |
+| ACTB  |   50000    |   51000    |   50500   |   49000   |
 
-| Gene | Controle_1 | Controle_2 | Tratado_1 | Tratado_2 |
-| :--- | :---: | :---: | :---: | :---: |
-| BRCA1 | 200 | 210 | 50 | 45 |
-| TP53 | 1500 | 1450 | 1520 | 1480 |
-| ACTB | 50000 | 51000 | 50500 | 49000 |
-
-::: fragment
-**Pergunta:** O gene BRCA1 aumentou ou diminuiu no tratamento?
+:::: fragment
+::: {.callout-tip title="Pergunta:"}
+O gene BRCA1 aumentou ou diminuiu no tratamento?
 :::
+::::
 
----
+------------------------------------------------------------------------
 
-# Bloco 4: Prática (Mão na Massa) {background-color="#E74C3C"}
-
-## Hora do R! 🧑‍💻
-
-Vamos usar o pacote **DESeq2**.
-
-O que ele faz?
-
-1.  **Normalização:** Compensa se uma amostra foi sequenciada mais que a outra.
-2.  **Estatística:** Calcula se a diferença é real ou acaso.
-3.  **Log2FoldChange:** A magnitude da mudança (2x, 4x, 0.5x).
-
-## Visualizando: PCA
-
-As minhas amostras se comportam como esperado?
-
-*(Espaço para plotar o gráfico no RStudio durante a prática)*
-
-> O PCA reduz a complexidade. Amostras parecidas ficam perto, diferentes ficam longe.
-
-## Visualizando: Volcano Plot
-
-O gráfico mais famoso da transcriptômica.
-
-* **Eixo X:** Mudança Biológica (Log2FoldChange).
-* **Eixo Y:** Certeza Estatística (-log10 p-value).
-* **Topo e pontas:** Os genes mais interessantes.
-
-## Enriquecimento Funcional
-
-Ok, tenho uma lista de 500 genes alterados. E agora?
-
-* **Gene Ontology (GO):** "Processo imune", "Divisão celular".
-* **KEGG:** Vias metabólicas.
-* **Redes (STRING):** Como essas proteínas conversam?
-
----
+# Bloco 4: Prática {background-color="#2C2F33"}
 
 # Conclusão & Próximos Passos {background-color="#003366"}
 
@@ -261,8 +269,8 @@ Gostou do que viu hoje? Isso é só a ponta do iceberg.
 
 **O Programa de Pós-Graduação em Bioinformática da UFRN:**
 
-* Multidisciplinar: Aceitamos biomédicos, biólogos, farmacêuticos, computação...
-* Foco em resolver problemas reais de saúde, agricultura e evolução.
+-   Multidisciplinar: Aceitamos biomédicos, biólogos, farmacêuticos, computação...
+-   Foco em resolver problemas reais de saúde, agricultura e evolução.
 
 ## Por que se especializar?
 
@@ -272,20 +280,18 @@ Gostou do que viu hoje? Isso é só a ponta do iceberg.
 
 ## Contatos
 
-::: columns
+::::: columns
 ::: {.column width="50%"}
 **Gleison M. Azevedo**
 
-📧 `seu.email@ufrn.br`
-🐙 [github.com/gleisonm](https://github.com/gleisonm/)
+📧 `seu.email@ufrn.br` 🐙 [github.com/gleisonm](https://github.com/gleisonm/)
 :::
 
 ::: {.column width="50%"}
 **BioME - UFRN**
 
-🌐 bioinfo.imd.ufrn.br
-🏫 Instituto Metrópole Digital
+🌐 bioinfo.imd.ufrn.br 🏫 Instituto Metrópole Digital
 :::
-:::
+:::::
 
 **Obrigado! Dúvidas?**
