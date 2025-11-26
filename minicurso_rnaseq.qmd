@@ -102,7 +102,48 @@ Variação da Expressão Gênica A análise de RNA-seq busca identificar variaç
 :::
 :::::
 
-## Análise do transcriptoma
+## O Conceito: Expressão Diferencial {.smaller}
+
+A pergunta de ouro não é "quais genes estão expressos", mas sim **"quais genes mudaram de comportamento?"**.
+
+* Comparação direta entre grupos (ex: Doente vs. Saudável).
+* Busca por **diferenças estatisticamente significativas**.
+* Identifica genes que foram "ligados" ou "desligados" devido a uma condição.
+
+::: {.callout-tip}
+## Analogia
+Imagine o genoma como uma mesa de som. A expressão diferencial nos diz quais botões (genes) tiveram o volume aumentado (**Upregulated**) ou diminuído (**Downregulated**).
+:::
+
+## Como medimos isso?
+
+Para afirmar que um gene mudou, o bioinformata olha para dois números principais na tabela de resultados:
+
+1.  **Log2 Fold Change (Log2FC):** Mede a **intensidade** da mudança.
+    * Positivo: O gene aumentou (Super-expresso).
+    * Negativo: O gene diminuiu (Sub-expresso).
+2.  **P-valor ajustado (Padj/FDR):** Mede a **confiabilidade**.
+    * Geralmente aceitamos *Padj < 0.05*.
+    * Garante que a mudança não foi por acaso.
+
+
+## Por que isso importa na Biomedicina?
+
+A expressão diferencial é a base da **Medicina de Precisão**.
+
+::: {.columns}
+::: {.column width="50%"}
+* **Diagnóstico:** Descoberta de novos biomarcadores para detecção precoce.
+* **Prognóstico:** Assinaturas gênicas que preveem agressividade tumoral.
+:::
+
+::: {.column width="50%"}
+* **Farmacologia:** Identificar novos alvos para medicamentos (quais proteínas bloquear?).
+* **Mecanismo:** Entender a fisiopatologia da doença a nível molecular.
+:::
+:::
+
+## Análise da expressão diferencial
 
 O transcriptoma reflete o estado fisiológico da célula em um momento específico "Snapshot".
 

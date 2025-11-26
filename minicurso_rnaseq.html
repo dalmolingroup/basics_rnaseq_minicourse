@@ -313,8 +313,62 @@ Gleison M. Azevedo
 <p><img data-src="https://media.springernature.com/lw1200/springer-static/image/art%3A10.1038%2Fs41375-018-0117-x/MediaObjects/41375_2018_117_Fig3_HTML.jpg"></p>
 </div></div>
 </section>
-<section id="análise-do-transcriptoma" class="slide level2">
-<h2>Análise do transcriptoma</h2>
+<section id="o-conceito-expressão-diferencial" class="slide level2 smaller">
+<h2>O Conceito: Expressão Diferencial</h2>
+<p>A pergunta de ouro não é “quais genes estão expressos”, mas sim <strong>“quais genes mudaram de comportamento?”</strong>.</p>
+<ul>
+<li>Comparação direta entre grupos (ex: Doente vs.&nbsp;Saudável).</li>
+<li>Busca por <strong>diferenças estatisticamente significativas</strong>.</li>
+<li>Identifica genes que foram “ligados” ou “desligados” devido a uma condição.</li>
+</ul>
+<div class="callout callout-tip callout-titled callout-style-default">
+<div class="callout-body">
+<div class="callout-title">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<p><strong>Analogia</strong></p>
+</div>
+<div class="callout-content">
+<p>Imagine o genoma como uma mesa de som. A expressão diferencial nos diz quais botões (genes) tiveram o volume aumentado (<strong>Upregulated</strong>) ou diminuído (<strong>Downregulated</strong>).</p>
+</div>
+</div>
+</div>
+</section>
+<section id="como-medimos-isso" class="slide level2">
+<h2>Como medimos isso?</h2>
+<p>Para afirmar que um gene mudou, o bioinformata olha para dois números principais na tabela de resultados:</p>
+<ol type="1">
+<li><strong>Log2 Fold Change (Log2FC):</strong> Mede a <strong>intensidade</strong> da mudança.
+<ul>
+<li>Positivo: O gene aumentou (Super-expresso).</li>
+<li>Negativo: O gene diminuiu (Sub-expresso).</li>
+</ul></li>
+<li><strong>P-valor ajustado (Padj/FDR):</strong> Mede a <strong>confiabilidade</strong>.
+<ul>
+<li>Geralmente aceitamos <em>Padj &lt; 0.05</em>.</li>
+<li>Garante que a mudança não foi por acaso.</li>
+</ul></li>
+</ol>
+</section>
+<section id="por-que-isso-importa-na-biomedicina" class="slide level2">
+<h2>Por que isso importa na Biomedicina?</h2>
+<p>A expressão diferencial é a base da <strong>Medicina de Precisão</strong>.</p>
+<div class="columns">
+<div class="column" style="width:50%;">
+<ul>
+<li><strong>Diagnóstico:</strong> Descoberta de novos biomarcadores para detecção precoce.</li>
+<li><strong>Prognóstico:</strong> Assinaturas gênicas que preveem agressividade tumoral.</li>
+</ul>
+</div><div class="column" style="width:50%;">
+<ul>
+<li><strong>Farmacologia:</strong> Identificar novos alvos para medicamentos (quais proteínas bloquear?).</li>
+<li><strong>Mecanismo:</strong> Entender a fisiopatologia da doença a nível molecular.</li>
+</ul>
+</div></div>
+</section>
+<section id="análise-da-expressão-diferencial" class="slide level2">
+<h2>Análise da expressão diferencial</h2>
 <p>O transcriptoma reflete o estado fisiológico da célula em um momento específico “Snapshot”.</p>
 
 <img data-src="images/unnamed-chunk-18-1.png" class="quarto-figure quarto-figure-center r-stretch"></section>
