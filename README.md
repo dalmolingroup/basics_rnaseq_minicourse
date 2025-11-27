@@ -5,7 +5,7 @@
 |  |  |
 | :--- | :--- |
 | **Licença** | [Creative Commons Attribution Share Alike 4.0 International License](https://creativecommons.org/licenses/by-sa/4.0/deed.en) |
-| **Público-alvo** | Bioinformática, Biologia Molecular, Pesquisadores e estudantes de pós-graduação. |
+| **Público-alvo** | Alunos de graduação e pós-graduação. |
 | **Nível** | **Iniciante/Intermediário** |
 | **Tempo estimado** | 240 minutos (4 horas) |
 
