@@ -1,0 +1,152 @@
+[
+  {
+    "objectID": "pratica_rnaseq.html",
+    "href": "pratica_rnaseq.html",
+    "title": "\n2  Parte 2: Prática\n",
+    "section": "",
+    "text": "3 Importação dos dados\ngene_count &lt;- read.csv(\"data_pratica/GSE60450_Lactation-GenewiseCounts.txt\")[,-1]\ngene_count &lt;- column_to_rownames(gene_count,\"EntrezGeneID\") |&gt;\n  dplyr::select(-Length)\n\nmetadata &lt;- read.csv(\"data_pratica/SampleInfo_Corrected.txt\", sep = \"\\t\")\nrownames(metadata) &lt;- metadata$SampleName",
+    "crumbs": [
+      "<span class='chapter-number'>2</span>  <span class='chapter-title'>Parte 2: Prática</span>"
+    ]
+  },
+  {
+    "objectID": "pratica_rnaseq.html#análise-de-componentes-principais-pca",
+    "href": "pratica_rnaseq.html#análise-de-componentes-principais-pca",
+    "title": "\n2  Parte 2: Prática\n",
+    "section": "\n4.1 Análise de Componentes Principais (PCA)",
+    "text": "4.1 Análise de Componentes Principais (PCA)\nA Análise de Componentes Principais (PCA) é uma técnica para análise multivariada que visa sumarizar as informações provenientes de uma amostra em novas características, ou componentes principais. Assim, para nossos propósitos, a informação a ser captada é a variabilidade da expressão dos genes de uma amostra. Por meio desta técnica, podemos resumir uma amostra em um ponto do espaço com n dimensões.\nA análise de componentes principais decompõe as informações dos genes em espaços de variabilidade. Quanto mais variabilidade há na expressão de um gene, mais este gene contribui para este espaço. Neste processo, definimos componentes que indicam em quais direções do espaço há maior variabilidade. A componente principal 1 (PC1) é direção onde há maior variabilidade, a componente principal 2 é direção onde há a segunda maior variabilidade, a componente principal 3 é direção onde há a terceira maior variabilidade, e assim por diante. Em geral, plotamos as componentes principais 1 e 2 e verificamos como as amostras se relacionam. O pacote PCAtools contém inúmeras funções customizadas para esta tarefa.\nAntes de realizarmos análise, aplicaremos uma transformação dos dados de expressão. Esta transformação é necessária para reduzir a dependência da variância em relação à média, já que uma das principais características de dados de expressão gênica é a heteroscedasticidade. Ou seja, genes com expressão média pequena tem variância grande, enquanto que genes com expressão média alta possuem menor variância. Este passo de transformação dos dados não é necessário para os testes de expressão diferencial, como veremos adiante. Alguns algoritmos de transformação dos dados são o variance stabilizing transformation (VST) e o regularized logarithm (rlog), ambos implementados no DESeq2.\n\ncounts_genes_vst &lt;- assay(dds_vst)\npca &lt;- pca(counts_genes_vst, metadata = metadata)\nbiplot(pca, colby = \"CellType\", shape = \"Status\", legendPosition = \"left\")",
+    "crumbs": [
+      "<span class='chapter-number'>2</span>  <span class='chapter-title'>Parte 2: Prática</span>"
+    ]
+  },
+  {
+    "objectID": "pratica_rnaseq.html#clusterização-hierárquica",
+    "href": "pratica_rnaseq.html#clusterização-hierárquica",
+    "title": "\n2  Parte 2: Prática\n",
+    "section": "\n4.2 Clusterização hierárquica",
+    "text": "4.2 Clusterização hierárquica\n\n# Transpor matriz de counts transformados\ncounts_genes_vst_t &lt;- t(counts_genes_vst)\n\n# Setar nomes dos grupos\nrownames(counts_genes_vst_t) &lt;- metadata$Status\n\n# Clusterização hierárquica\nd &lt;- dist(as.matrix(counts_genes_vst_t), method = \"euclidean\")\nclusters &lt;- hclust(d, method = \"complete\")\n\n# Plotar\npar(mar = c(1, 1, 1, 1))\nplot(clusters)",
+    "crumbs": [
+      "<span class='chapter-number'>2</span>  <span class='chapter-title'>Parte 2: Prática</span>"
+    ]
+  },
+  {
+    "objectID": "pratica_rnaseq.html#análise-de-covariáveis",
+    "href": "pratica_rnaseq.html#análise-de-covariáveis",
+    "title": "\n2  Parte 2: Prática\n",
+    "section": "\n4.3 Análise de covariáveis",
+    "text": "4.3 Análise de covariáveis\nA análise de expressão diferencial nada mais é que um modelo de regressão, no qual a variável resposta é a expressão de cada um dos genes e a variável explanatória é o grupo de comparação (no nosso caso, os subtipos do tumor). Este modelo de expressão é aplicado a cada um dos genes para verificarmos se há diferença na expressão quando consideramos os diferentes níveis do grupo de comparação.\nEntretanto, outras variáveis, além do grupo de comparação, podem ser importantes para explicar a expressão gênica. Como vimos na PCA, as características histológicas são um importante fator que influencia a expressão gênica. Além disso, o pesquisador pode julgar, com base em evidências prévias, que uma variável é relevante para o modelo. Estas variáveis adicionais podem ser acrescentadas ao modelo de expressão gênica a fim de melhorar a resolução dos resultados.\nUma forma de selecionar covariáveis é verificar quais se correlacionam significativamente com as componentes principais. A seguir, a função eigencorplot fornece uma maneira fácil de visualizarmos as correlações significativas.\nNo nosso caso não temos covariáveis, mas segue o script de exemplo:\n\neigencorplot(pca, metavars = c(\"CellType\", \"Status\"))\n\n\n\n\n\n\n\nAs escolha de covariáveis para o modelo é um processo subjetivo. Entretanto, sugerimos selecionar as covariáveis que se correlacionam com as primeiras componentes. Portanto, pelo gráfico de correlações acima, podemos adicionar a covariável histology ao modelo de expressão de genes e transcritos.",
+    "crumbs": [
+      "<span class='chapter-number'>2</span>  <span class='chapter-title'>Parte 2: Prática</span>"
+    ]
+  },
+  {
+    "objectID": "index.html",
+    "href": "index.html",
+    "title": "Bioinformática Aplicada à Transcriptômica: uma introdução prática ao RNA-Seq e análise de expressão diferencial",
+    "section": "",
+    "text": "0.1 Lesson overview 📚",
+    "crumbs": [
+      "<span class='chapter-number'>1</span>  <span class='chapter-title'>Minicurso - Expressão Diferencial (RNA-seq)</span>"
+    ]
+  },
+  {
+    "objectID": "index.html#lesson-overview",
+    "href": "index.html#lesson-overview",
+    "title": "Bioinformática Aplicada à Transcriptômica: uma introdução prática ao RNA-Seq e análise de expressão diferencial",
+    "section": "",
+    "text": "Licença\nCreative Commons Attribution Share Alike 4.0 International License\n\n\nPúblico-alvo\nBioinformática, Biologia Molecular, Pesquisadores e estudantes de pós-graduação.\n\n\nNível\nIniciante/Intermediário\n\n\nTempo estimado\n240 minutos (4 horas)",
+    "crumbs": [
+      "<span class='chapter-number'>1</span>  <span class='chapter-title'>Minicurso - Expressão Diferencial (RNA-seq)</span>"
+    ]
+  },
+  {
+    "objectID": "index.html#prerequisites-pré-requisitos",
+    "href": "index.html#prerequisites-pré-requisitos",
+    "title": "Bioinformática Aplicada à Transcriptômica: uma introdução prática ao RNA-Seq e análise de expressão diferencial",
+    "section": "0.2 ⬅️ Prerequisites (Pré-requisitos)",
+    "text": "0.2 ⬅️ Prerequisites (Pré-requisitos)\nPara acompanhar este curso, os alunos devem ter conhecimento em:\n\nConhecimento sólido em R: Habilidade para carregar bibliotecas, manipular data frames (dplyr, tidyverse) e criar funções.\nFundamentos de RNA-seq: Familiaridade com dados de contagens (raw counts), normalização e a necessidade de modelos estatísticos robustos.\nEstatística Básica: Compreensão de \\(\\text{p-valor}\\), \\(\\text{p-valor}\\) ajustado (\\(\\text{padj}\\)), e \\(\\log_2 \\text{Fold Change}\\) (\\(\\text{LFC}\\)).",
+    "crumbs": [
+      "<span class='chapter-number'>1</span>  <span class='chapter-title'>Análise Prática de Expressão Diferencial e Funcional (RNA-seq)</span>"
+    ]
+  },
+  {
+    "objectID": "index.html#description-descrição-do-curso",
+    "href": "index.html#description-descrição-do-curso",
+    "title": "Bioinformática Aplicada à Transcriptômica: uma introdução prática ao RNA-Seq e análise de expressão diferencial",
+    "section": "0.3 📖 Description (Descrição do Curso)",
+    "text": "0.3 📖 Description (Descrição do Curso)\nEste repositório contém o material prático e scripts de R para o curso “Análise de Expressão Diferencial e Funcional (RNA-seq)”. O workshop utiliza dados de expressão gênica (GSE60450) para demonstrar um pipeline completo de análise de RNA-seq, do início ao fim.\nO curso cobre as seguintes etapas essenciais em bioinformática:\n\nSanidade e Exploração de Dados: Importação, transformação VST e análise exploratória (PCA e Clusterização Hierárquica) para avaliar a qualidade e a estrutura dos dados.\nAnálise de Expressão Diferencial (DGE): Aplicação do modelo Binomial Negativo com o pacote DESeq2 e interpretação dos contrastes de interesse.\nRepresentações Gráficas: Criação de visualizações de alta qualidade para publicação, incluindo Heatmaps e Volcano Plots customizados.\n\n[Image of a volcano plot showing upregulated and downregulated genes]\n\nInterpretação Funcional: Análise de Enriquecimento Funcional (KEGG Pathways) usando clusterProfiler para identificar vias biológicas alteradas.\nAnálise de Redes: Construção e visualização de Redes de Interação Proteína-Proteína (PPI) a partir da API do STRINGdb.",
+    "crumbs": [
+      "<span class='chapter-number'>1</span>  <span class='chapter-title'>Análise Prática de Expressão Diferencial e Funcional (RNA-seq)</span>"
+    ]
+  },
+  {
+    "objectID": "index.html#learning-outcomes-resultados-de-aprendizagem",
+    "href": "index.html#learning-outcomes-resultados-de-aprendizagem",
+    "title": "Bioinformática Aplicada à Transcriptômica: uma introdução prática ao RNA-Seq e análise de expressão diferencial",
+    "section": "0.4 ➡️ Learning Outcomes (Resultados de Aprendizagem)",
+    "text": "0.4 ➡️ Learning Outcomes (Resultados de Aprendizagem)\nAo final do curso, os alunos serão capazes de:\n\nProcessar e explorar dados de contagem de RNA-seq usando pacotes essenciais como DESeq2 e PCAtools.\nExecutar o pipeline completo do DESeq2, testando contrastes de interesse e interpretando as métricas (\\(\\text{LFC}\\) e \\(\\text{padj}\\)).\nGerar e customizar gráficos de qualidade de publicação, como Volcano Plots e Heatmaps, aplicando temas profissionais.\nRealizar Análise de Enriquecimento Funcional (KEGG) e interpretar as vias biológicas significativas.\nConstruir e filtrar Redes de Interação Proteína-Proteína (PPI) utilizando a API do STRINGdb e ferramentas de visualização como igraph e RedeR.",
+    "crumbs": [
+      "<span class='chapter-number'>1</span>  <span class='chapter-title'>Análise Prática de Expressão Diferencial e Funcional (RNA-seq)</span>"
+    ]
+  },
+  {
+    "objectID": "index.html#requirements-requisitos-de-software",
+    "href": "index.html#requirements-requisitos-de-software",
+    "title": "Bioinformática Aplicada à Transcriptômica: uma introdução prática ao RNA-Seq e análise de expressão diferencial",
+    "section": "0.5 ⚙️ Requirements (Requisitos de Software)",
+    "text": "0.5 ⚙️ Requirements (Requisitos de Software)\nParticipantes devem ter um laptop com uma versão recente do R (\\(\\ge 4.0\\)) e RStudio instalados.\n\n0.5.1 📦 Principais Dependências de Pacotes (R/Bioconductor):\n\n\n\n\n\n\n\nCategoria\nPacotes\n\n\n\n\nDGE\nDESeq2\n\n\nExploração/Visualização\ntidyverse (dplyr, ggplot2), PCAtools, pheatmap, ggrepel\n\n\nAnotação/Funcional\nclusterProfiler, AnnotationDbi, org.Mm.eg.db\n\n\nRedes\nRCurl, igraph, RedeR",
+    "crumbs": [
+      "<span class='chapter-number'>1</span>  <span class='chapter-title'>Análise Prática de Expressão Diferencial e Funcional (RNA-seq)</span>"
+    ]
+  },
+  {
+    "objectID": "index.html#acknowledgements-agradecimentos",
+    "href": "index.html#acknowledgements-agradecimentos",
+    "title": "Bioinformática Aplicada à Transcriptômica: uma introdução prática ao RNA-Seq e análise de expressão diferencial",
+    "section": "0.6 🙏 Acknowledgements (Agradecimentos)",
+    "text": "0.6 🙏 Acknowledgements (Agradecimentos)\n\nBioinformatics Multidisciplinary Environment (BioME - IMD/UFRN)\nPostgraduate Program in Bioinformatics (PPg-Bioinfo - UFRN)\nAgradecimento especial: O material prático utiliza dados públicos do estudo GSE60450 (Assay et al., 2014) sobre a glândula mamária de camundongos.",
+    "crumbs": [
+      "<span class='chapter-number'>1</span>  <span class='chapter-title'>Análise Prática de Expressão Diferencial e Funcional (RNA-seq)</span>"
+    ]
+  },
+  {
+    "objectID": "index.html#descrição-do-curso",
+    "href": "index.html#descrição-do-curso",
+    "title": "Bioinformática Aplicada à Transcriptômica: uma introdução prática ao RNA-Seq e análise de expressão diferencial",
+    "section": "0.2 📖 Descrição do Curso",
+    "text": "0.2 📖 Descrição do Curso\nEste repositório contém o material prático e scripts de R para o curso “Análise de Expressão Diferencial e Funcional (RNA-seq)”. Esta análise utiliza dados de expressão gênica (GSE60450) para demonstrar um pipeline de análise de RNA-seq.\nO curso cobre as seguintes etapas essenciais em bioinformática:\n\nSanidade e Exploração de Dados: Importação, transformação VST e análise exploratória (PCA e Clusterização Hierárquica) para avaliar a qualidade e a estrutura dos dados.\nAnálise de Expressão Diferencial (DGE): Aplicação do modelo Binomial Negativo com o pacote DESeq2 e interpretação dos contrastes de interesse.\nRepresentações Gráficas: Criação de visualizações de alta qualidade para publicação, incluindo Heatmaps e Volcano Plots customizados.\nInterpretação Funcional: Análise de Enriquecimento Funcional (KEGG Pathways) usando clusterProfiler para identificar vias biológicas alteradas.\nAnálise de Redes: Construção e visualização de Redes de Interação Proteína-Proteína (PPI) a partir da API do STRINGdb.",
+    "crumbs": [
+      "<span class='chapter-number'>1</span>  <span class='chapter-title'>Minicurso - Expressão Diferencial (RNA-seq)</span>"
+    ]
+  },
+  {
+    "objectID": "index.html#resultados-de-aprendizagem",
+    "href": "index.html#resultados-de-aprendizagem",
+    "title": "Bioinformática Aplicada à Transcriptômica: uma introdução prática ao RNA-Seq e análise de expressão diferencial",
+    "section": "0.3 ➡ Resultados de Aprendizagem",
+    "text": "0.3 ➡ Resultados de Aprendizagem\nAo final do curso, os alunos serão capazes de:\n\nProcessar e explorar dados de contagem de RNA-seq usando pacotes essenciais como DESeq2 e PCAtools.\nExecutar o pipeline completo do DESeq2, testando contrastes de interesse e interpretando as métricas (\\(\\text{LFC}\\) e \\(\\text{padj}\\)).\nGerar gráficos de qualidade de publicação, como Volcano Plots e Heatmaps, aplicando temas profissionais.\nRealizar Análise de Enriquecimento Funcional (KEGG) e interpretar as vias biológicas significativas.\nConstruir Redes de Interação Proteína-Proteína (PPI) utilizando a API do STRINGdb e ferramentas de visualização como igraph e RedeR.",
+    "crumbs": [
+      "<span class='chapter-number'>1</span>  <span class='chapter-title'>Minicurso - Expressão Diferencial (RNA-seq)</span>"
+    ]
+  },
+  {
+    "objectID": "index.html#requisitos-de-software",
+    "href": "index.html#requisitos-de-software",
+    "title": "Bioinformática Aplicada à Transcriptômica: uma introdução prática ao RNA-Seq e análise de expressão diferencial",
+    "section": "0.4 ⚙ Requisitos de Software",
+    "text": "0.4 ⚙ Requisitos de Software\nParticipantes devem ter um laptop com uma versão recente do R (\\(\\ge 4.0\\)) e RStudio instalados.\n\n0.4.1 📦 Principais Dependências de Pacotes (R/Bioconductor):\n\n\n\n\n\n\n\nCategoria\nPacotes\n\n\n\n\nDGE\nDESeq2\n\n\nExploração/Visualização\ntidyverse (dplyr, ggplot2), PCAtools, pheatmap, ggrepel\n\n\nAnotação/Funcional\nclusterProfiler, AnnotationDbi, org.Mm.eg.db\n\n\nRedes\nRCurl, igraph, RedeR",
+    "crumbs": [
+      "<span class='chapter-number'>1</span>  <span class='chapter-title'>Minicurso - Expressão Diferencial (RNA-seq)</span>"
+    ]
+  },
+  {
+    "objectID": "index.html#agradecimentos",
+    "href": "index.html#agradecimentos",
+    "title": "Bioinformática Aplicada à Transcriptômica: uma introdução prática ao RNA-Seq e análise de expressão diferencial",
+    "section": "0.5 🙏 Agradecimentos",
+    "text": "0.5 🙏 Agradecimentos\n\nBioinformatics Multidisciplinary Environment (BioME - IMD/UFRN)\nPostgraduate Program in Bioinformatics (PPg-Bioinfo - UFRN)\nAgradecimento especial: O material prático utiliza dados públicos do estudo GSE60450 (Assay et al., 2014) sobre a glândula mamária de camundongos.",
+    "crumbs": [
+      "<span class='chapter-number'>1</span>  <span class='chapter-title'>Minicurso - Expressão Diferencial (RNA-seq)</span>"
+    ]
+  }
+]
