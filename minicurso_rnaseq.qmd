@@ -306,18 +306,24 @@ O gene BRCA1 aumentou ou diminuiu no tratamento?
 
 ## BioME - Bioinformatics Multidisciplinary Environment
 
-Gostou do que viu hoje? Isso é só a ponta do iceberg.
+Gostou do que viu hoje? Isso é só um pouco do que fazemos.
 
 **O Programa de Pós-Graduação em Bioinformática da UFRN:**
 
--   Multidisciplinar: Aceitamos biomédicos, biólogos, farmacêuticos, computação...
--   Foco em resolver problemas reais de saúde, agricultura e evolução.
+-   Processo seletivo de mestrado e doutorado 2x ao ano
+-   IMD0605 - Seminários em Bioinformática (4M56)
+-   Redes Sociais:
+    -   Instagram: @biomeoficial
+    -   Site: bioinfo.imd.ufrn.br
+    
+## VII WORKSHOP
+*Semana de Portas Abertas*
+8-10 Dez 2025
+-   Palestras
+-   Minicursos
+-   Mesa redonda
+-   Pôsteres
 
-## Por que se especializar?
-
-1.  **Ciência de Dados** é a habilidade do futuro na saúde.
-2.  Medicina de Precisão e Diagnóstico Molecular dependem disso.
-3.  Mercado acadêmico e privado em expansão.
 
 ## Contatos
 
@@ -325,13 +331,15 @@ Gostou do que viu hoje? Isso é só a ponta do iceberg.
 ::: {.column width="50%"}
 **Gleison M. Azevedo**
 
-📧 `seu.email@ufrn.br` 🐙 [github.com/gleisonm](https://github.com/gleisonm/)
+📧 `gleison.azevedo.542@ufrn.edu.br`
 :::
 
 ::: {.column width="50%"}
 **BioME - UFRN**
 
-🌐 bioinfo.imd.ufrn.br 🏫 Instituto Metrópole Digital
+🌐 bioinfo.imd.ufrn.br 
+🏫 Instituto Metrópole Digital
+
 :::
 :::::
 
